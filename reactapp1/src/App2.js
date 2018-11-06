@@ -1,23 +1,103 @@
-import React, { Component } from 'react';
-import {Grid, Jumbotron} from 'react-bootstrap';
-import SearchForm from './Components/SearchForm';
-import Results from './compentns/Results';
+// import React, { Component } from 'react';
+// import {Grid, Jumbotron} from 'react-bootstrap';
+const Header =() => (
 
+
+
+
+
+)
+
+function Header(){
+  return (
+    <header>
+      <h1>ScoreBoard</h1>
+          <span className="stats"> Players: 1
+          </span>
+
+    </header>
+
+  );
+}
+
+const Player = () => {
+  return (
+    <div className="player">
+      <span className="player-name">
+        Guil
+      
+      </span>
+        <Counter />
+      </div>
+
+
+    </div>
+
+  );
+
+
+}
+
+const App =() =>{
+  return(
+
+    <div className="scoreboard">
+      <Header />
+    
+    </div>
+
+  );
+
+
+}
+
+
+const Counter = () => {
+  <div className ="Counter">
+        <button className="counter-action decrement"> - </button>
+        <span className="counter-score">35</span>
+        <button className="counter-action increment"> + </button>
+      </div>
+
+
+}
+
+ReactDOM.render(
+  <Header />,
+  document.getElementById('root')
+
+
+);
 // import logo from './logo.svg';
 // import './App.css';
 // import React, { Component } from "react";
 
 
-
 // class App extends Component {
 //   constructor() {
-//     super()
-//     this.state = {
-//       pokemon: [],
-//       search: "",
-//       selectedPokemon: null
+//     return(
+//       <div>
+//         <Jumbotron>
+//           <Grid>
+//             <h1>Search App</h1>
+//             <p>This is a simple search app</p>
+//           </Grid>
+//         </Jumbotron>
+//       </div>
+//     );
 //     }
 //   }
+
+
+class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      pokemon: [],
+      search: "",
+      selectedPokemon: null
+    }
+  }
 
 //   async componentDidMount() {
 //     const res = await fetch('https://pokeapi.co/api/v2/pokemon/')
@@ -78,7 +158,7 @@ import Results from './compentns/Results';
 //   }
 // }
 
-export default App;
+// export default App;
 
 
 
