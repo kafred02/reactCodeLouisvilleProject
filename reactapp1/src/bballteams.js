@@ -1,4 +1,4 @@
-[
+const teams = [
     {
       "teamId": 1610612737,
       "abbreviation": "ATL",
@@ -210,3 +210,6 @@
       "location": "Washington"
     }
   ]
+
+  export default teams
+  

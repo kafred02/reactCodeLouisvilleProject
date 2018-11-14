@@ -13,7 +13,7 @@
 }
 body {
   color: #576366;
-  background: #5fcf80;
+  background: #2346e0;
   margin: 0;
   font-family: 'Roboto', sans-serif;
 }
@@ -39,7 +39,7 @@ hr {
   border: 0;
   height: 0;
   margin: 2.3em 0 2em 0;
-  border-top: 1px solid rgba(0, 0, 0, .1);
+  border-top: 5px solid rgba(0, 0, 0, .1);
 }
 
 /* FORM & BUTTON STYLES -------- */
@@ -77,6 +77,7 @@ button {
   border-radius: .5em;
   box-shadow: 0 3px rgba(0,0,0, .1);
   overflow: hidden;
+  border: solid 3px rgb(0, 0, 0);
 }
 header {
   background: #edeff0;
@@ -149,18 +150,28 @@ header {
 /* ICONS -------- */
 
 .icn-logo {
-  background: #54606b;
+  background: #0228fd;
   color: #fff;
+  text-shadow: 3px 3px black;
+  border: solid 3px rgb(0, 0, 0);
+
 }
 .icn-logo i {
   font-size: 2.45em;
   /* line-height: 0; */
   margin-top: 30px;
   padding-top: 0px;
+
 }
 .icn-error {
   font-size: 3.2em;
   margin-bottom: .25em;
+}
+
+.bballGo {
+
+  padding-right: 5px;
+
 }
 
 /* ================================= 
