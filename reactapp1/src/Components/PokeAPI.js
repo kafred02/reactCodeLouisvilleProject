@@ -1,8 +1,9 @@
 import React from 'react';
 
-
+//
 class PokeAPI extends React.Component {
   constructor() {
+    // 
     super()
     this.state = {
       pokemon: [],
@@ -10,17 +11,19 @@ class PokeAPI extends React.Component {
       selectedPokemon: null
     }
   }
-
+//Mounts the pokemon API to the state
   async componentDidMount() {
     const res = await fetch('https://pokeapi.co/api/v2/pokemon/')
     const json = await res.json()
     this.setState({pokemon: json.results})
   }
 
+  //changes state based on search results
   onSearchChange = event => {
     this.setState({search: event.target.value})
   }
 
+  // returns the state based on what is searched, and filters it 10
   generateSearchResults = search => {
     if (search === "") {
       return []
@@ -31,16 +34,18 @@ class PokeAPI extends React.Component {
     }
   }
 
+  // selects the pokemon
   selectPokemon = async (name) => {
     const res = 
       await fetch(
         `https://pokeapi.co/api/v2/pokemon/${name}/`,
         {cache: "force-cache"})
         
+        //sets the state based upon the response
     const json = await res.json() 
     this.setState({selectedPokemon: json, search: name})
   }
-
+//renders the state after the mount
   render() {
     const results = this.generateSearchResults(this.state.search)
 

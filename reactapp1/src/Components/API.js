@@ -9,8 +9,10 @@ class API extends React.Component {
   constructor() {
     super()
     this.state = {
-      seasons: "",
-      teams: "",
+      seasonSearch: "2000-01",
+      teamSearch: 1610612751,
+      // seasonSearch: "",
+      // teamSearch: "",
       search: "",
       selectedPokemon: null
     }
@@ -34,34 +36,41 @@ class API extends React.Component {
 
 
    //changes state based on search results
-   onSeasonListChange = event => {
-    this.setState({seasonList: event.target.value})
+   onseasonSearchChange = event => {
+    this.setState({seasonSearch: event.target.value})
   }
 
-  generateCommonTeamRoster = search => {
-    if (search === "") {
+  generateCommonTeamRoster = seasonSearch => {
+    if (seasonSearch === "") {
       return []
     } else {
       return this.state.commonTeamRoster
-        .filter(p => p.season.includes(search))
-        .slice(0, 10)
+        // .filter(p => p.season.includes(search))
+        // .slice(0, 10)
     }
   }
 
-  selectCommonRoster = async (teamID, season) => {
+  selectCommonRoster = async (teamSearch, seasonSearch) => {
   const res = 
-    await fetch(
-      `https://stats.nba.com/stats/commonteamroster/?Season=${season}&TeamID=${teamID}/`,
+    await fetch( 
+      //{mode: 'no-cors'},
+      `https://stats.nba.com/stats/commonteamroster/?Season=${seasonSearch}&TeamID=${teamSearch}`,
+      //`https://stats.nba.com/stats/commonteamroster/?Season=2017-18&TeamID=1610612737/`,
+      //`https://stats.nba.com/stats/commonteamroster?Season=2000-01&TeamID=1610612762`,
       {cache: "force-cache"})
       
   const json = await res.json() 
-  this.setState({selectedCommonRoster: json, selectSeason: season, selectTeam: teamID})
+  this.setState({selectedCommonRoster: json, seasonSearch: this.seasonSearch, selectTeam: teamSearch})
   }
   
   render() {
 
-    const results = this.generateCommonTeamRoster(this.state.search)
+    //const results = this.generateCommonTeamRoster(this.state.search)
+    //const results = this.generateCommonTeamRoster(this.state.seasonSearch)
     
+    //onChange={this.onseasonSearchChange}
+    //value={this.state.seasonSearch}
+    //value={season.seasonYear}
         return(
 
           // document = (props) => (
@@ -70,35 +79,42 @@ class API extends React.Component {
               <p>This is where the API would go</p>
               <p>Find a Team Roster</p>
           
-              <div className="seasonList">
-                <select id="seasons" pr-5>
-                {seasons.map(season =><option> {season.seasonYear} </option>)}
-                onChange={this.onSeasonListChange}
-                value={this.state.seasonList}
+              <div className="seasonSearch">
+                <select id="seasonSearch" className="pr-5">
+                {seasons.map(season =><option onClick={() => this.onseasonSearchChange} key={season.id} onChange={this.onseasonSearchChange} value={this.state.seasonSearch}> {season.seasonYear} </option>)}
+                
 
                 
                 </select>
 
-                <ul>
+                {/* <ul>
                   {results.map(r => 
-                    <li onClick={() => this.selectCommonRoster(r.season)}> 
+                    <li onClick={() => this.selectCommonRoster(r.seasonSearch)}> 
                       {r.season} 
                     </li>
                   )}
                   </ul>
-                
+                 */}
               
               </div>
-              <div className="TeamList">
-              <select id="teams" pr-5>    
-                  {teams.map(team =><option value={team.teamID}> {team.simpleName} </option>)}
+              <div className="teamSearch">
+              <select id="teamSearch" className="pr-5">    
+                  {teams.map(team =><option onClick={() => this.selectCommonRoster(0,0)} key={team.teamId} value={this.state.teamSearch }> {team.simpleName} </option>)}
               </select>
               </div>
               
-              
-                <button className="bballGo ml-3" bsStyle="primary" onClick="teamGo" >Go!</button>
+              {/* this.seasonSearch */}
+                <button className="bballGo ml-3" onClick={r => {this.selectCommonRoster(this.state.teamSearch,this.state.seasonSearch)}} >Go!</button>
               
                 </div>
+                 
+                 
+          //        <div className="result">
+          //   <p src={this.state.selectedPokemon.sprites.back_default} alt=""/>
+          // </div>
+                // <div className="results">
+
+                // </div>
 
                   
               );
