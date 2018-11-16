@@ -11,33 +11,34 @@ class API extends React.Component {
     this.state = {
       seasonSearch: "2000-01",
       teamSearch: 1610612751,
-      // seasonSearch: "",
-      // teamSearch: "",
       search: "",
-      selectedPokemon: null
+      selectedCommonRoster: {rowSet: []},
     }
   }
 
   async componentDidMount() {
-    const res = await fetch(`https://stats.nba.com/stats/commonteamroster`)
-    const json = await res.json()
-    this.setState({commonTeamRoster: json.results})
+    // const res = await fetch(`https://stats.nba.com/stats/commonteamroster/?Season=2000-01&TeamID=1610612751`)
+    // const json = await res.json()
+    // this.setState({ selectedCommonRoster: json.resultSets[0]})
   }
   // async componentDidMount() {
   //     try {
   //       const response = await fetch(`https://stats.nba.com/stats/commonteamroster`);
   //       if (!response.ok) {
-  //         throw Error(response.statusText);
+  //         catch Error(response.statusText);
   //       }
   //       const json = await response.json();
   //     }
   //   }
 
+  //changes state based on search results
+  onSeasonSearchChange = event => {
+    this.setState({ seasonSearch: event.target.value })
+  }
 
+  onTeamSearchChange = event => {
 
-   //changes state based on search results
-   onseasonSearchChange = event => {
-    this.setState({seasonSearch: event.target.value})
+    this.setState({ teamSearch: event.target.value })
   }
 
   generateCommonTeamRoster = seasonSearch => {
@@ -45,82 +46,113 @@ class API extends React.Component {
       return []
     } else {
       return this.state.commonTeamRoster
-        // .filter(p => p.season.includes(search))
-        // .slice(0, 10)
+      // .filter(p => p.season.includes(search))
+      // .slice(0, 10)
     }
   }
 
   selectCommonRoster = async (teamSearch, seasonSearch) => {
-  const res = 
-    await fetch( 
-      //{mode: 'no-cors'},
-      `https://stats.nba.com/stats/commonteamroster/?Season=${seasonSearch}&TeamID=${teamSearch}`,
-      //`https://stats.nba.com/stats/commonteamroster/?Season=2017-18&TeamID=1610612737/`,
-      //`https://stats.nba.com/stats/commonteamroster?Season=2000-01&TeamID=1610612762`,
-      {cache: "force-cache"})
-      
-  const json = await res.json() 
-  this.setState({selectedCommonRoster: json, seasonSearch: this.seasonSearch, selectTeam: teamSearch})
+    const res =
+      await fetch(
+        //{mode: 'no-cors'},
+        `https://stats.nba.com/stats/commonteamroster/?Season=${seasonSearch}&TeamID=${teamSearch}`,
+        //`https://stats.nba.com/stats/commonteamroster/?Season=2017-18&TeamID=1610612737/`,
+        //`https://stats.nba.com/stats/commonteamroster?Season=2000-01&TeamID=1610612762`,
+        { cache: "force-cache" })
+
+    const json = await res.json()
+    this.setState({ selectedCommonRoster: json.resultSets[0] })
   }
-  
+
   render() {
 
     //const results = this.generateCommonTeamRoster(this.state.search)
     //const results = this.generateCommonTeamRoster(this.state.seasonSearch)
-    
-    //onChange={this.onseasonSearchChange}
-    //value={this.state.seasonSearch}
-    //value={season.seasonYear}
-        return(
-
-          // document = (props) => (
-            <div className="main-content">
-              {/* <h2>{ props.title }</h2> */}
-              <p>This is where the API would go</p>
-              <p>Find a Team Roster</p>
-          
-              <div className="seasonSearch">
-                <select id="seasonSearch" className="pr-5">
-                {seasons.map(season =><option onClick={() => this.onseasonSearchChange} key={season.id} onChange={this.onseasonSearchChange} value={this.state.seasonSearch}> {season.seasonYear} </option>)}
-                
-
-                
-                </select>
-
-                {/* <ul>
-                  {results.map(r => 
-                    <li onClick={() => this.selectCommonRoster(r.seasonSearch)}> 
-                      {r.season} 
-                    </li>
-                  )}
-                  </ul>
-                 */}
-              
-              </div>
-              <div className="teamSearch">
-              <select id="teamSearch" className="pr-5">    
-                  {teams.map(team =><option onClick={() => this.selectCommonRoster(0,0)} key={team.teamId} value={this.state.teamSearch }> {team.simpleName} </option>)}
+    const results = this.state.selectedCommonRoster
+    //this.state.teamSearch
+      return (
+        <>
+          <div className="main-content">
+            <p>This is where the API would go</p>
+            <p>Find a Team Roster</p>
+  
+  
+            <div className="seasonSearch">
+              <select id="seasonSearch" className="pr-5" onChange={this.onSeasonSearchChange}>
+                {seasons.map(season => <option key={season.id} > {season.seasonYear} </option>)}
               </select>
-              </div>
-              
-              {/* this.seasonSearch */}
-                <button className="bballGo ml-3" onClick={r => {this.selectCommonRoster(this.state.teamSearch,this.state.seasonSearch)}} >Go!</button>
-              
-                </div>
-                 
-                 
-          //        <div className="result">
-          //   <p src={this.state.selectedPokemon.sprites.back_default} alt=""/>
-          // </div>
-                // <div className="results">
+            </div>
+  
+            <div className="teamSearch">
+              <select id="teamSearch" className="pr-5" onChange={this.onTeamSearchChange}>
+                {teams.map(team => <option value={team.teamId} key={team.teamId}> {team.simpleName} </option>)}
+              </select>
+            </div>
+  
+            <button className="bballGo ml-3" onClick={r => { this.selectCommonRoster(this.state.teamSearch, this.state.seasonSearch) }} >Find Common Team Roster</button>
+  
+  
+            <ul>{results.rowSet.map(rs =>
+              <ul>
+                {/* <li>
+                  TeamID: {rs[0]}
+                </li>
+                <li>
+                  Season: {rs[1]}
+                </li>
+                <li>
+                  LeagueID: {rs[2]}
+                </li> */}
+                <li>
+                  Player: {rs[3]}
+                </li>
+                <li>
+                  Num: {rs[4]}
+                </li>
+                <li>
+                  Position: {rs[5]}
+                </li>
+                <li>
+                  Height: {rs[6]}
+                </li>
+                <li>
+                  Weight: {rs[6]}
+                </li>
+                <li>
+                  Birth_Date: {rs[6]}
+                </li>
+                <li>
+                  Age: {rs[7]}
+                </li>
+                <li>
+                  Exp: {rs[8]}
+                </li>
+                <li>
+                  School: {rs[9]}
+                </li>
+                <li>
+                  player_id: {rs[10]}
+                </li>
+                <li>
+                  -----
+                </li>
+              </ul>
+            )}
+  
+            </ul>
+  
+          </div>
+  
+        </>
+  
+  
+  
+  
+  
+      );
 
-                // </div>
 
-                  
-              );
-
-        
-       }  
+  }
 
 }
 
@@ -160,7 +192,7 @@ class API extends React.Component {
 //     await fetch(
 //       `https://stats.nba.com/stats/commonteamroster/?Season=${season}&TeamID=${teamID}/`,
 //       {cache: "force-cache"})
-      
+
 //   const json = await res.json() 
 //   this.setState({selectedPokemon: json, search: name})
 
@@ -231,7 +263,7 @@ class API extends React.Component {
 //   }
 
 //https://stats.nba.com/stats/commonteamroster?Season=2000-01&TeamID=1610612762
- 
+
 
 //   render() {
 //     const results = this.generateSearchResults(this.state.search)
