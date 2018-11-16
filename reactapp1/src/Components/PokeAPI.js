@@ -48,9 +48,12 @@ class PokeAPI extends React.Component {
 //renders the state after the mount
   render() {
     const results = this.generateSearchResults(this.state.search)
-
+      // {PokeAPI /}
     return (
       <div className="PokeAPI">
+      {/* <p>Search for a pokemon and click on it for find it's picture!</p> */}
+
+      
         <div className="search">
           <input 
             onChange={this.onSearchChange} 
@@ -64,7 +67,7 @@ class PokeAPI extends React.Component {
             )}
           </ul>
         </div>
-
+        
         {this.state.selectedPokemon &&
           <div className="result">
             <img src={this.state.selectedPokemon.sprites.back_default} alt=""/>
